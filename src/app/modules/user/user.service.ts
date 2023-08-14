@@ -25,6 +25,23 @@ const createOrUpdateUser = async (data: User): Promise<User> => {
   return user;
 };
 
+const getAllUser = async (): Promise<User[]> => {
+  const users = await prisma.user.findMany();
+  return users;
+};
+
+const getSingleUser = async (payload: number): Promise<User | null> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: payload,
+    },
+  });
+
+  return user;
+};
+
 export const UserService = {
   createOrUpdateUser,
+  getAllUser,
+  getSingleUser,
 };
