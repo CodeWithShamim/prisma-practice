@@ -1,7 +1,23 @@
 import { User } from "@prisma/client";
 import prisma from "../../../utils/prisma";
 
-const createUser = async (data: User): Promise<User> => {
+const createOrUpdateUser = async (data: User): Promise<User> => {
+  const isExist = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
+
+  if (isExist) {
+    const user = await prisma.user.update({
+      where: {
+        email: data.email,
+      },
+      data,
+    });
+    return user;
+  }
+
   const user = await prisma.user.create({
     data,
   });
@@ -10,5 +26,5 @@ const createUser = async (data: User): Promise<User> => {
 };
 
 export const UserService = {
-  createUser,
+  createOrUpdateUser,
 };
