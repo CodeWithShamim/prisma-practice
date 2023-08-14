@@ -20,7 +20,25 @@ const getAllPost = async (): Promise<Post[]> => {
   });
 };
 
+const updatePost = async (
+  id: number,
+  payload: Partial<Post>
+): Promise<Post> => {
+  return await prisma.post.update({
+    where: {
+      id,
+    },
+    data: payload,
+
+    include: {
+      author: true,
+      category: true,
+    },
+  });
+};
+
 export const PostService = {
   createPost,
   getAllPost,
+  updatePost,
 };
