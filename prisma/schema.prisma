@@ -40,7 +40,7 @@ model Category {
 
 model Post {
   id    Int    @id @default(autoincrement())
-  title String @map("postTitle")
+  title String
 
   authorId   Int
   categoryId Int

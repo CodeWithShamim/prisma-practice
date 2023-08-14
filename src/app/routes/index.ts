@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import { UserRoutes } from "../modules/user/user.route";
 import { CategoryRoutes } from "../modules/category/category.route";
+import { PostRoutes } from "../modules/post/post.route";
 const router: Router = express.Router();
 
 const moduleRoutes = [
@@ -11,6 +12,10 @@ const moduleRoutes = [
   {
     path: "/category",
     route: CategoryRoutes,
+  },
+  {
+    path: "/post",
+    route: PostRoutes,
   },
 ];
 
