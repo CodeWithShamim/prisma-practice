@@ -9,39 +9,42 @@ const createOrUpdateUser = async (data: User): Promise<User> => {
   });
 
   if (isExist) {
-    const user = await prisma.user.update({
+    return await prisma.user.update({
       where: {
         email: data.email,
       },
       data,
     });
-    return user;
   }
 
-  const user = await prisma.user.create({
+  return await prisma.user.create({
     data,
   });
-
-  return user;
 };
 
 const getAllUser = async (): Promise<User[]> => {
-  const users = await prisma.user.findMany();
-  return users;
+  return await prisma.user.findMany();
 };
 
 const getSingleUser = async (payload: number): Promise<User | null> => {
-  const user = await prisma.user.findUnique({
+  return await prisma.user.findUnique({
     where: {
       id: payload,
     },
   });
+};
 
-  return user;
+const deleteUser = async (payload: number): Promise<User | null> => {
+  return await prisma.user.delete({
+    where: {
+      id: payload,
+    },
+  });
 };
 
 export const UserService = {
   createOrUpdateUser,
   getAllUser,
   getSingleUser,
+  deleteUser,
 };
