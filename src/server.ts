@@ -1,19 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { Request, Response } from "express";
+import app from "./app";
+import routes from "./app/routes";
 
-const prisma = new PrismaClient();
+app.get("/", (req: Request, res: Response) => {
+  res.send("okkk");
+});
 
-async function main() {
-  const result = await prisma.user.findMany();
-  console.log(result);
-
-  // const result = await prisma.user.create({
-  //   data: {
-  //     email: "shamim2@gmail.com",
-  //     name: "shamim2",
-  //   },
-  // });
-
-  console.log(result);
-}
-
-main();
+app.use("/api/v1", routes);
