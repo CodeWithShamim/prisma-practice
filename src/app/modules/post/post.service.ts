@@ -11,13 +11,45 @@ const createPost = async (data: Post): Promise<Post> => {
   });
 };
 
-const getAllPost = async (): Promise<Post[]> => {
-  return await prisma.post.findMany({
+const getAllPost = async (options?: any): Promise<Post[]> => {
+  const {
+    sortBy = "createdAt",
+    sortOrder = "desc",
+    searchTerm,
+    page = 1,
+    limit = 10,
+  } = options;
+
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+  const take = parseInt(limit);
+
+  // pagination, filters/search, order
+  let query: any = {
+    skip,
+    take,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
     include: {
       author: true,
       category: true,
     },
-  });
+  };
+
+  if (searchTerm) {
+    query.where = {
+      OR: [
+        {
+          title: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+      ],
+    };
+  }
+
+  return await prisma.post.findMany(query);
 };
 
 const updatePost = async (
